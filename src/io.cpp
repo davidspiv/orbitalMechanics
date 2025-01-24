@@ -36,11 +36,9 @@ void printHistory(const Waypoint *waypoints, size_t numInputs)
 {
    std::cout << std::endl
              << std::setw(11) << std::left << "Date" << std::setw(9)
-             << "Planet" << std::setw(13) << "MPH" << std::setw(9) << "AU"
-             << "Years" << std::endl;
+             << "Planet" << std::setw(13) << "AU" << std::endl;
    std::cout << std::setw(11) << std::left << "----" << std::setw(9)
-             << "------" << std::setw(13) << "---" << std::setw(9) << "--"
-             << "-----" << std::endl;
+             << "------" << std::setw(13) << "--" << std::endl;
 
    // detect intentional integer wrap around so I can keep using unsigned type
    for (size_t i = (numInputs - 1); i < numInputs; i--)
@@ -52,10 +50,8 @@ void printHistory(const Waypoint *waypoints, size_t numInputs)
       const std::string date = month + '/' + day + '/' + year;
 
       std::cout << std::setw(11) << std::left << date << std::setw(9)
-                << waypoints[i].planetName << std::setw(13)
-                << waypoints[i].velocityAsMph << std::setw(9)
-                << waypoints[i].geocentricDistance << waypoints[i].timeAsYears
-                << std::endl;
+                << waypoints[i].planetName << std::setw(13) << std::setw(9)
+                << waypoints[i].geocentricDistance << std::endl;
    }
 }
 
@@ -195,18 +191,4 @@ int getPlanetIndex()
    } while (planetIndex == -1);
 
    return planetIndex;
-}
-
-// gets a user input is miles per hour and returns it
-int getVelocityAsMph()
-{
-   int velocityAsMph = getInput<int>("Enter miles per hour: ");
-
-   while (velocityAsMph <= 0)
-   {
-      print("Must be greater than 0.");
-      velocityAsMph = getInput<int>("Enter miles per hour: ");
-   }
-
-   return velocityAsMph;
 }

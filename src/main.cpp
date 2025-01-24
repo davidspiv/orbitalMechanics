@@ -8,25 +8,6 @@
 
 using namespace std;
 
-// allocates a larger but otherwise identical array (probably should replace
-// class with vector instance)
-template <typename T> void expandArray(T *&arr, size_t &maxInputs)
-{
-   const size_t step = 5;
-
-   T *copyArr = new T[maxInputs + step];
-
-   for (size_t i = 0; i < maxInputs; i++)
-   {
-      copyArr[i] = arr[i];
-   }
-
-   delete[] arr;
-   arr = copyArr;
-
-   maxInputs += step;
-}
-
 // ensures degrees is within the standard circle range
 double normalizeDegrees(double x)
 {
@@ -69,39 +50,6 @@ string formatDouble(double yearsAsDouble)
    }
 
    return yearsAsString;
-}
-
-// converts time format if needed and display a border around the output
-string formatTimeResult(const string &label, double years)
-{
-   string formattedTime = label + ": ";
-   string resultBorder = "";
-
-   if (years == 0)
-   {
-      formattedTime += "None";
-   }
-   else if (years == 1)
-   {
-      formattedTime += "1 year";
-   }
-   else if (years < 1)
-   {
-      formattedTime += to_string(years) + " of a year";
-   }
-   else if (years > 100000)
-   {
-      formattedTime += formatDouble(years / 1000) + " millennia";
-   }
-   else
-   {
-      formattedTime += formatDouble(years) + " years";
-   }
-
-   // border should be same length as result
-   resultBorder = string(formattedTime.length(), '-');
-
-   return "\n" + resultBorder + "\n" + formattedTime + "\n" + resultBorder;
 }
 
 // populates a dynamically allocated array with Planet structs and returns the
@@ -201,43 +149,6 @@ Planet *populatePlanets()
    return planets;
 }
 
-// solves for time using the velocity equation
-double calcYears(double distanceAsAU, double velocityAsMph)
-{
-   const int HOURS_PER_YEAR = 8760;
-   const double MILES_PER_AU = 9.296e+7;
-
-   const double distanceAsMiles = distanceAsAU * MILES_PER_AU;
-
-   return distanceAsMiles / velocityAsMph / HOURS_PER_YEAR;
-}
-
-// loops through the array and calculates each distance value, returning the
-// sum
-double calcTotalTime(Waypoint *&waypoints)
-{
-   int validIndex = 0;
-   double totalTime = 0;
-
-   while (waypoints[validIndex].planetName != "" &&
-          waypoints[validIndex].velocityAsMph != 0)
-   {
-      totalTime += waypoints[validIndex].timeAsYears;
-      validIndex += 1;
-   }
-
-   return totalTime;
-}
-
-// formats total and displays to console
-void printTotal(Waypoint *&waypoints)
-{
-   double totalTime = calcTotalTime(waypoints);
-   string totalTimeAsString = formatTimeResult("Total time", totalTime);
-
-   print(totalTimeAsString);
-}
-
 // Numerical approximation of Eccentric Anomaly (E) using the Newton-Raphson
 // method
 double calcEccentricAnomaly(double eccentricity, double normalizedMeanAnomaly)
@@ -325,7 +236,6 @@ Waypoint createWaypoint(const Planet *&planets)
 {
    const Date date = getDate();
    const int planetIndex = getPlanetIndex();
-   const double velocityAsMph = getVelocityAsMph();
 
    const float days = calcDaysSinceEpoch(date);
 
@@ -395,61 +305,18 @@ Waypoint createWaypoint(const Planet *&planets)
    const double gZ = heliocentricCordEarth.z - heliocentricCordPlanet.z;
 
    const double distance = sqrt(pow(gX, 2) + pow(gY, 2) + pow(gZ, 2));
-   const double years = calcYears(distance, velocityAsMph);
-   const string totalTimeAsString = formatTimeResult("Travel time", years);
 
-   print(totalTimeAsString);
-
-   return {date, planet.name, velocityAsMph, distance, years};
+   return {date, planet.name, distance};
 }
 
 int main()
 {
-   const int ADD_WAYPOINT = 1;
-   const int HISTORY = 2;
-   const int TOTAL = 3;
-   const int QUIT = 4;
-
-   int menuChoice = 0;
-   size_t numInputs = 0;
-   size_t maxInputs = 10;
-
    const Planet *planets = populatePlanets();
-   Waypoint *waypoints = new Waypoint[maxInputs];
-
-   print("Planet Trip Calculator");
-
-   do
-   {
-      menuChoice = getMenuChoice(QUIT);
-
-      if (menuChoice == ADD_WAYPOINT)
-      {
-         if (numInputs == maxInputs)
-         {
-            expandArray<Waypoint>(waypoints, maxInputs);
-         }
-
-         waypoints[numInputs] = createWaypoint(planets);
-         numInputs += 1;
-      }
-      else if (menuChoice == HISTORY)
-      {
-         printHistory(waypoints, numInputs);
-      }
-      else if (menuChoice == TOTAL)
-      {
-         printTotal(waypoints);
-      }
-
-   } while (menuChoice != QUIT);
+   const Waypoint waypoint = createWaypoint(planets);
+   cout << "GEOCENTRIC DISTANCE: " << waypoint.geocentricDistance << endl;
 
    delete[] planets;
-   delete[] waypoints;
    planets = nullptr;
-   waypoints = nullptr;
-
-   print("\nEnd program.");
 
    return 0;
 }

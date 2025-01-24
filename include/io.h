@@ -66,12 +66,17 @@ bool writeToFile(const T &output, const std::string &fileName)
 }
 
 std::string getString(const std::string &prompt);
+
 void printMenu();
+
 void printHistory(const Waypoint *waypoints, size_t numInputs);
+
 int getMenuChoice(int maxChoice);
+
 Date getDate();
+
 std::string toLowercase(std::string input);
+
 int getPlanetIndex();
-int getVelocityAsMph();
 
 #endif

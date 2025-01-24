@@ -34,9 +34,7 @@ struct Waypoint
 {
    Date date;
    std::string planetName;
-   double velocityAsMph;
    double geocentricDistance;
-   double timeAsYears;
 };
 
 #endif
