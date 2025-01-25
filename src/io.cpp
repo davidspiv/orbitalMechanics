@@ -21,58 +21,6 @@ std::string getString(const std::string &prompt)
    return input;
 }
 
-// shows menu choices that correspond to integer constants
-void printMenu()
-{
-   print(R"(
-1. Add waypoint
-2. History
-3. Total
-4. Quit)");
-}
-
-// loops through data arrays and prints out past inputs and results
-void printHistory(const Waypoint *waypoints, size_t numInputs)
-{
-   std::cout << std::endl
-             << std::setw(11) << std::left << "Date" << std::setw(9)
-             << "Planet" << std::setw(13) << "AU" << std::endl;
-   std::cout << std::setw(11) << std::left << "----" << std::setw(9)
-             << "------" << std::setw(13) << "--" << std::endl;
-
-   // detect intentional integer wrap around so I can keep using unsigned type
-   for (size_t i = (numInputs - 1); i < numInputs; i--)
-   {
-      const std::string month = std::to_string(waypoints[i].date.month);
-      const std::string day = std::to_string(waypoints[i].date.day);
-      const std::string year = std::to_string(waypoints[i].date.year);
-
-      const std::string date = month + '/' + day + '/' + year;
-
-      std::cout << std::setw(11) << std::left << date << std::setw(9)
-                << waypoints[i].planetName << std::setw(13) << std::setw(9)
-                << waypoints[i].geocentricDistance << std::endl;
-   }
-}
-
-// gets menu option and returns it
-int getMenuChoice(int maxChoice)
-{
-   int menuOption = 0;
-
-   printMenu();
-   menuOption = getInput<int>("Choose option: ");
-
-   while (menuOption <= 0 || menuOption > maxChoice)
-   {
-      print("Must choose number from menu options.");
-      printMenu();
-      menuOption = getInput<int>("Choose option: ");
-   }
-
-   return menuOption;
-}
-
 // gets date std::string from user input, more lenient than prompt suggests
 Date getDate()
 {

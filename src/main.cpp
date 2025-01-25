@@ -245,60 +245,6 @@ Waypoint createWaypoint(const Planet *&planets)
    Cord heliocentricCordPlanet = calcHeliocentricCord(planet, days);
    const Cord heliocentricCordEarth = calcHeliocentricCord(earth, days);
 
-   // accounting for perturbations
-   // const double meanAnomalyJupiter = getNormalizedMeanAnomaly(planets[4],
-   // days); const double meanAnomalySaturn =
-   // getNormalizedMeanAnomaly(planets[5], days); const double
-   // MeanAnomalyUranus = getNormalizedMeanAnomaly(planets[6], days);
-
-   // double lonecl = atan2(heliocentricCordPlanet.y,
-   // heliocentricCordPlanet.x); double latecl =
-   //     atan2(heliocentricCordPlanet.z,
-   //           sqrt(heliocentricCordPlanet.x * heliocentricCordPlanet.x +
-   //                heliocentricCordPlanet.y * heliocentricCordPlanet.y));
-
-   // if (planet.name == "jupiter") {
-   //   lonecl +=
-   //       -0.332 * sin(2 * meanAnomalyJupiter - 5 * meanAnomalySaturn
-   //       - 67.6);
-   //   lonecl += -0.056 * sin(2 * meanAnomalyJupiter - 2 * meanAnomalySaturn +
-   //   21); lonecl += 0.042 * sin(3 * meanAnomalyJupiter - 5 *
-   //   meanAnomalySaturn
-   //   + 21); lonecl += -0.036 * sin(meanAnomalyJupiter - 2 *
-   //   meanAnomalySaturn); lonecl += 0.022 * cos(meanAnomalyJupiter -
-   //   meanAnomalySaturn); lonecl += 0.023 * sin(2 * meanAnomalyJupiter - 3 *
-   //   meanAnomalySaturn + 52); lonecl += -0.016 * sin(meanAnomalyJupiter - 5
-   //   * meanAnomalySaturn - 69);
-   // }
-
-   // if (planet.name == "saturn") {
-   //   lonecl +=
-   //       0.812 * sin(2 * meanAnomalyJupiter - 5 * meanAnomalySaturn - 67.6);
-   //   lonecl += -0.229 * cos(2 * meanAnomalyJupiter - 4 * meanAnomalySaturn -
-   //   2); lonecl += 0.119 * sin(meanAnomalyJupiter - 2 * meanAnomalySaturn -
-   //   3); lonecl += 0.046 * sin(2 * meanAnomalyJupiter - 6 *
-   //   meanAnomalySaturn
-   //   - 69); lonecl += 0.014 * sin(meanAnomalyJupiter - 3 * meanAnomalySaturn
-   //   + 32);
-
-   //   latecl += -0.020 * cos(2 * meanAnomalyJupiter - 4 * meanAnomalySaturn -
-   //   2); latecl += 0.018 * sin(2 * meanAnomalyJupiter - 6 *
-   //   meanAnomalySaturn
-   //   - 49);
-   // }
-
-   // if (planet.name == "uranus") {
-   //   lonecl += 0.040 * sin(meanAnomalySaturn - 2 * MeanAnomalyUranus + 6);
-   //   lonecl += 0.035 * sin(meanAnomalySaturn - 3 * MeanAnomalyUranus + 33);
-   //   lonecl += -0.015 * sin(meanAnomalyJupiter - MeanAnomalyUranus + 20);
-   // }
-
-   // heliocentricCordPlanet.x =
-   //     heliocentricCordPlanet.r * cos(lonecl) * cos(latecl);
-   // heliocentricCordPlanet.y =
-   //     heliocentricCordPlanet.r * sin(lonecl) * cos(latecl);
-   // heliocentricCordPlanet.z = heliocentricCordPlanet.r * sin(latecl);
-
    // geocentric 3d cartesian coordinates
    const double gX = heliocentricCordEarth.x - heliocentricCordPlanet.x;
    const double gY = heliocentricCordEarth.y - heliocentricCordPlanet.y;
@@ -312,7 +258,7 @@ Waypoint createWaypoint(const Planet *&planets)
 int main()
 {
    const Planet *planets = populatePlanets();
-   const Waypoint waypoint = createWaypoint(planets);
+   Waypoint waypoint = createWaypoint(planets);
    cout << "GEOCENTRIC DISTANCE: " << waypoint.geocentricDistance << endl;
 
    delete[] planets;
