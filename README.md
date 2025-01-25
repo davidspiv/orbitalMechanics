@@ -2,40 +2,40 @@
 Calculate the distance between the planets and earth given a specified datetime.
 
 ## Definitions ##
-Astronomical units (AU)
+**Astronomical units (AU)**
 : the mean distance between the Earth and the Sun
 
-Orbital Elements
+**Orbital Elements**
 : parameters that specify the angle of orbit in three dimensions and the position of the planet along that orbit (planets.json)
 
-J2000 Epoch
+**J2000 Epoch**
 : Jan 1, 2000. The moment in time the orbital elements were measured
 
-Plane of the ecliptic
+**Plane of the ecliptic**
 : the imaginary plane containing Earth's path around the Sun
 
-Semi-major axis
+**Semi-major axis**
 : [units: AU] half the length of the long axis of the ellipse. Worded another way, the largest radius that exists in the satellite's orbit
 
-Eccentricity
+**Eccentricity**
 : [units: N/A] ratio between the focal distance (which is relative to J2000) and the semi-major axis
 
-Orbital inclination
+**Orbital inclination**
 : [units: degrees] The tilt of the planet's orbit around the sun relative to plane of the ecliptic
 
-Longitude of the ascending node
+**Longitude of the ascending node**
 : [units: degrees] angular position on plane of the ecliptic relative to J2000
 
-Longitude of perihelion
+**Longitude of perihelion**
 : [units: degrees] the point in orbit closest to sun relative to the plane of the ecliptic. All three anomalies (calculated later on) are zero when the planet is at perihelion.
 
-Argument of the periapsis
+**Argument of the periapsis**
 : The longitude of the ascending node subtracted from the longitude of perihelion
 
-Mean anomaly
+**Mean anomaly**
 : [units: degrees] the fraction of the period that has elapsed since the planet passed through the perihelion relative to J2000
 
-Period
+**Period**
 : [units: days] the time it takes for the planet to travel around the sun
 
 ## Visualization in 2D ##

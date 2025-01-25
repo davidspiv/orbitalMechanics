@@ -90,6 +90,7 @@ std::string toLowercase(std::string input)
    return input;
 }
 
+// returns value sans quotes regardless if its a string or a number
 std::string getValueFromJSONLine(std::string line)
 {
    const size_t startIndex = line.rfind(':', line.length() - 1) + 2;
