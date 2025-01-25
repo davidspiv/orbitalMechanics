@@ -26,62 +26,6 @@ double calcDaysSinceEpoch(const Date &date)
    return totalDays - 1;
 }
 
-// reads planets.json into a dynamically allocated array of planet structs
-Planet *populatePlanets()
-{
-   Planet *planets = new Planet[8]{{"", 0, 0, 0, 0, 0, 0, 0}};
-   size_t planetIndex = 0;
-   const std::string searchString = "\"name\": \"";
-   std::fstream fileStream;
-   std::string line;
-
-   openFile(fileStream, "planets.json");
-
-   while (std::getline(fileStream, line))
-   {
-      const int objectStart = line.find("\"name\": \"");
-
-      if (objectStart > 0)
-      {
-         const double nameIndex = objectStart + searchString.length();
-
-         planets[planetIndex].name =
-             line.substr(nameIndex, line.length() - nameIndex - 2);
-
-         std::getline(fileStream, line);
-         planets[planetIndex].semiMajorAxis =
-             std::stod(line.substr(objectStart + 17));
-
-         std::getline(fileStream, line);
-         planets[planetIndex].eccentricity =
-             std::stod(line.substr(objectStart + 16));
-
-         std::getline(fileStream, line);
-         planets[planetIndex].orbitalInclination =
-             std::stod(line.substr(objectStart + 22));
-
-         std::getline(fileStream, line);
-         planets[planetIndex].longitudeOfAscendingNode =
-             std::stod(line.substr(objectStart + 28));
-
-         std::getline(fileStream, line);
-         planets[planetIndex].longitudeOfPerihelion =
-             std::stod(line.substr(objectStart + 26));
-
-         std::getline(fileStream, line);
-         planets[planetIndex].meanAnomaly =
-             std::stod(line.substr(objectStart + 15));
-
-         std::getline(fileStream, line);
-         planets[planetIndex].period =
-             std::stod(line.substr(objectStart + 10));
-
-         planetIndex++;
-      }
-   }
-   return planets;
-}
-
 // Numerical approximation of Eccentric Anomaly (E) using the Newton-Raphson
 // method
 double calcEccentricAnomaly(double eccentricity, double normalizedMeanAnomaly)
@@ -191,7 +135,7 @@ Waypoint createWaypoint(const Planet *&planets)
 int main()
 {
    const Planet *planets = populatePlanets();
-   Waypoint waypoint = createWaypoint(planets);
+   const Waypoint waypoint = createWaypoint(planets);
    cout << "GEOCENTRIC DISTANCE: " << waypoint.geocentricDistance << endl;
 
    delete[] planets;

@@ -26,4 +26,6 @@ std::string toLowercase(std::string input);
 
 int getPlanetIndex();
 
+Planet *populatePlanets();
+
 #endif
