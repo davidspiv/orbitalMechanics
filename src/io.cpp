@@ -90,63 +90,30 @@ std::string toLowercase(std::string input)
    return input;
 }
 
-// matches a user input with a list of celestial bodies
-int getPlanetIndex()
+std::string getValueFromJSONLine(std::string line)
 {
-   int planetIndex = -1;
+   const size_t startIndex = line.rfind(':', line.length() - 1) + 2;
+   const size_t valueLength = line.length() - startIndex;
+   std::string value = line.substr(startIndex, valueLength);
 
-   do
+   // remove quotes from json string values;
+   if (line.find(": \"") == std::string::npos)
    {
-      std::string name = getString("Enter a planet in our solar system: ");
-      name = toLowercase(name);
+      return value;
+   }
 
-      if (name.length() > 10)
-      {
-         print("Planet meanAnomaly must be within our solar system.");
-      }
-      else if (name.find("mercury") != std::string::npos)
-      {
-         planetIndex = 0;
-      }
-      else if (name.find("venus") != std::string::npos)
-      {
-         planetIndex = 1;
-      }
-      else if (name.find("mars") != std::string::npos)
-      {
-         planetIndex = 3;
-      }
-      else if (name.find("jupiter") != std::string::npos)
-      {
-         planetIndex = 4;
-      }
-      else if (name.find("saturn") != std::string::npos)
-      {
-         planetIndex = 5;
-      }
-      else if (name.find("uranus") != std::string::npos)
-      {
-         planetIndex = 6;
-      }
-      else if (name.find("neptune") != std::string::npos)
-      {
-         planetIndex = 7;
-      }
-      else
-      {
-         print("Planet must be within our solar system.");
-      }
-   } while (planetIndex == -1);
-
-   return planetIndex;
+   // ignore trailing commas
+   const size_t endIndex = value.rfind('"') - 1;
+   return value.substr(1, endIndex);
 }
 
 // reads planets.json into a dynamically allocated array of planet structs
 Planet *populatePlanets()
 {
-   Planet *planets = new Planet[8]{{"", 0, 0, 0, 0, 0, 0, 0}};
+   const std::string firstKey = "\"name\": \"";
+   const size_t numberOfPlanets = 8;
+   Planet *planets = new Planet[numberOfPlanets]{{"", 0, 0, 0, 0, 0, 0, 0}};
    size_t planetIndex = 0;
-   const std::string searchString = "\"name\": \"";
    std::fstream fileStream;
    std::string line;
 
@@ -154,44 +121,42 @@ Planet *populatePlanets()
 
    while (std::getline(fileStream, line))
    {
-      const int objectStart = line.find("\"name\": \"");
+      const int objectStart = line.find(firstKey);
 
       if (objectStart > 0)
       {
-         const double nameIndex = objectStart + searchString.length();
-
-         planets[planetIndex].name =
-             line.substr(nameIndex, line.length() - nameIndex - 2);
+         planets[planetIndex].name = getValueFromJSONLine(line);
 
          std::getline(fileStream, line);
          planets[planetIndex].semiMajorAxis =
-             std::stod(line.substr(objectStart + 17));
+             std::stod(getValueFromJSONLine(line));
 
          std::getline(fileStream, line);
          planets[planetIndex].eccentricity =
-             std::stod(line.substr(objectStart + 16));
+             std::stod(getValueFromJSONLine(line));
 
          std::getline(fileStream, line);
          planets[planetIndex].orbitalInclination =
-             std::stod(line.substr(objectStart + 22));
+             std::stod(getValueFromJSONLine(line));
 
          std::getline(fileStream, line);
          planets[planetIndex].longitudeOfAscendingNode =
-             std::stod(line.substr(objectStart + 28));
+             std::stod(getValueFromJSONLine(line));
 
          std::getline(fileStream, line);
          planets[planetIndex].longitudeOfPerihelion =
-             std::stod(line.substr(objectStart + 25));
+             std::stod(getValueFromJSONLine(line));
 
          std::getline(fileStream, line);
          planets[planetIndex].meanAnomaly =
-             std::stod(line.substr(objectStart + 15));
+             std::stod(getValueFromJSONLine(line));
 
          std::getline(fileStream, line);
-         planets[planetIndex].period =
-             std::stod(line.substr(objectStart + 10));
+         planets[planetIndex].period = std::stod(getValueFromJSONLine(line));
 
          planetIndex++;
+         if (planetIndex > numberOfPlanets)
+            break;
       }
    }
    return planets;
