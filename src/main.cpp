@@ -26,93 +26,59 @@ double calcDaysSinceEpoch(const Date &date)
    return totalDays - 1;
 }
 
-// populates a dynamically allocated array with Planet structs and returns the
-// owner pointer
+// reads planets.json into a dynamically allocated array of planet structs
 Planet *populatePlanets()
 {
-   Planet mercury;
-   mercury.name = "mercury";
-   mercury.semiMajorAxis = 0.38709893;
-   mercury.eccentricity = 0.20563069;
-   mercury.orbitalInclination = 7.00487;
-   mercury.longitudeOfAscendingNode = 48.33167;
-   mercury.longitudeOfPerihelion = 77.45645;
-   mercury.meanAnomaly = 174.796;
-   mercury.period = 87.969;
+   Planet *planets = new Planet[8]{{"", 0, 0, 0, 0, 0, 0, 0}};
+   size_t planetIndex = 0;
+   const std::string searchString = "\"name\": \"";
+   std::fstream fileStream;
+   std::string line;
 
-   Planet venus;
-   venus.name = "venus";
-   venus.semiMajorAxis = 0.72333199;
-   venus.eccentricity = 0.00677323;
-   venus.orbitalInclination = 3.39471;
-   venus.longitudeOfAscendingNode = 76.68069;
-   venus.longitudeOfPerihelion = 131.53298;
-   venus.meanAnomaly = 50.45;
-   venus.period = 224.7008;
+   openFile(fileStream, "planets.json");
 
-   Planet earth;
-   earth.name = "earth";
-   earth.semiMajorAxis = 1.00000011;
-   earth.eccentricity = 0.01671022;
-   earth.orbitalInclination = 0.00005;
-   earth.longitudeOfAscendingNode = -11.26064;
-   earth.longitudeOfPerihelion = 102.94719;
-   earth.meanAnomaly = 357.51716;
-   earth.period = 365.259636;
+   while (std::getline(fileStream, line))
+   {
+      const int objectStart = line.find("\"name\": \"");
 
-   Planet mars;
-   mars.name = "mars";
-   mars.semiMajorAxis = 1.52366231;
-   mars.eccentricity = 0.09341233;
-   mars.orbitalInclination = 1.85061;
-   mars.longitudeOfAscendingNode = 49.57854;
-   mars.longitudeOfPerihelion = 336.04084;
-   mars.meanAnomaly = 19.387;
-   mars.period = 686.9957;
+      if (objectStart > 0)
+      {
+         const double nameIndex = objectStart + searchString.length();
 
-   Planet jupiter;
-   jupiter.name = "jupiter";
-   jupiter.semiMajorAxis = 5.20336301;
-   jupiter.eccentricity = 0.04839266;
-   jupiter.orbitalInclination = 1.30530;
-   jupiter.longitudeOfAscendingNode = 100.55615;
-   jupiter.longitudeOfPerihelion = 14.75385;
-   jupiter.meanAnomaly = 20.020;
-   jupiter.period = 11.862;
+         planets[planetIndex].name =
+             line.substr(nameIndex, line.length() - nameIndex - 2);
 
-   Planet saturn;
-   saturn.name = "saturn";
-   saturn.semiMajorAxis = 9.53707032;
-   saturn.eccentricity = 0.05415060;
-   saturn.orbitalInclination = 2.48446;
-   saturn.longitudeOfAscendingNode = 113.71504;
-   saturn.longitudeOfPerihelion = 92.43194;
-   saturn.meanAnomaly = 317.020;
-   saturn.period = 29.4475;
+         std::getline(fileStream, line);
+         planets[planetIndex].semiMajorAxis =
+             std::stod(line.substr(objectStart + 17));
 
-   Planet uranus;
-   uranus.name = "uranus";
-   uranus.semiMajorAxis = 19.19126393;
-   uranus.eccentricity = 0.04716771;
-   uranus.orbitalInclination = 0.76986;
-   uranus.longitudeOfAscendingNode = 74.22988;
-   uranus.longitudeOfPerihelion = 170.96424;
-   uranus.meanAnomaly = 142.238600;
-   uranus.period = 84.011;
+         std::getline(fileStream, line);
+         planets[planetIndex].eccentricity =
+             std::stod(line.substr(objectStart + 16));
 
-   Planet neptune;
-   neptune.name = "neptune";
-   neptune.semiMajorAxis = 30.06896348;
-   neptune.eccentricity = 0.00858587;
-   neptune.orbitalInclination = 1.76917;
-   neptune.longitudeOfAscendingNode = 131.72169;
-   neptune.longitudeOfPerihelion = 44.97135;
-   neptune.meanAnomaly = 259.883;
-   neptune.period = 164.79;
+         std::getline(fileStream, line);
+         planets[planetIndex].orbitalInclination =
+             std::stod(line.substr(objectStart + 22));
 
-   Planet *planets = new Planet[8]{mercury, venus,  earth,  mars,
-                                   jupiter, saturn, uranus, neptune};
+         std::getline(fileStream, line);
+         planets[planetIndex].longitudeOfAscendingNode =
+             std::stod(line.substr(objectStart + 28));
 
+         std::getline(fileStream, line);
+         planets[planetIndex].longitudeOfPerihelion =
+             std::stod(line.substr(objectStart + 26));
+
+         std::getline(fileStream, line);
+         planets[planetIndex].meanAnomaly =
+             std::stod(line.substr(objectStart + 15));
+
+         std::getline(fileStream, line);
+         planets[planetIndex].period =
+             std::stod(line.substr(objectStart + 10));
+
+         planetIndex++;
+      }
+   }
    return planets;
 }
 
