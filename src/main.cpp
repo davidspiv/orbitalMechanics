@@ -1,5 +1,6 @@
 #include <math.h>
 
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -109,15 +110,10 @@ Cord calcHeliocentricCord(const Planet &planet, float daysSinceEpoch)
 
 // creates a Waypoint struct that includes inputs and the results attributed to
 // one travel entry. Acts as a controller
-Waypoint createWaypoint(const Planet *&planets)
+float calcDistance(const Planet &planet, float days)
 {
-   const Date date = getDate();
-   const int planetIndex = getPlanetIndex();
-
-   const float days = calcDaysSinceEpoch(date);
-
-   const Planet planet = planets[planetIndex];
-   const Planet earth = planets[2];
+   const Planet earth = {"earth",   1.00000011, 0.01671022, 0.00005,
+                         -11.26064, 102.94719,  357.51716,  365.259636};
 
    Cord heliocentricCordPlanet = calcHeliocentricCord(planet, days);
    const Cord heliocentricCordEarth = calcHeliocentricCord(earth, days);
@@ -129,14 +125,23 @@ Waypoint createWaypoint(const Planet *&planets)
 
    const double distance = sqrt(pow(gX, 2) + pow(gY, 2) + pow(gZ, 2));
 
-   return {date, planet.name, distance};
+   return distance;
 }
 
 int main()
 {
    const Planet *planets = populatePlanets();
-   const Waypoint waypoint = createWaypoint(planets);
-   cout << "GEOCENTRIC DISTANCE: " << waypoint.geocentricDistance << endl;
+   const Date date = getDate();
+   const float days = calcDaysSinceEpoch(date);
+
+   for (size_t i = 0; i < 8; i++)
+   {
+      const string name = planets[i].name;
+      const float distance = calcDistance(planets[i], days);
+
+      cout << name << std::setw(10 - name.length()) << " : " << distance
+           << endl;
+   }
 
    delete[] planets;
    planets = nullptr;

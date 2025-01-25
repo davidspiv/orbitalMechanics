@@ -30,11 +30,4 @@ struct Date
    double universalTime;
 };
 
-struct Waypoint
-{
-   Date date;
-   std::string planetName;
-   double geocentricDistance;
-};
-
 #endif
