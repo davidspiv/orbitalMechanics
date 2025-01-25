@@ -191,16 +191,6 @@ Planet *populatePlanets()
          planets[planetIndex].period =
              std::stod(line.substr(objectStart + 10));
 
-         //  std::cout << planets[planetIndex].name << std::endl;
-         //  std::cout << planets[planetIndex].semiMajorAxis << std::endl;
-         //  std::cout << planets[planetIndex].eccentricity << std::endl;
-         //  std::cout << planets[planetIndex].orbitalInclination << std::endl;
-         //  std::cout << planets[planetIndex].longitudeOfAscendingNode
-         //            << std::endl;
-         //  std::cout << planets[planetIndex].longitudeOfPerihelion <<
-         //  std::endl; std::cout << planets[planetIndex].meanAnomaly <<
-         //  std::endl; std::cout << planets[planetIndex].period << std::endl;
-
          planetIndex++;
       }
    }

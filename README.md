@@ -1,30 +1,42 @@
 ## Purpose ##
-Calculate the position of a planet within our solar system at a given point in time. Display it's distance away from earth.
+Calculate the distance between the planets and earth given a specified datetime.
 
 ## Definitions ##
-Orbital Elements
-: the information needed to define a position of a planet in orbit. These parameters specify the angle of orbit in three dimensions and the position of the planet along that orbit. Measurements are relative to the J2000 epoch (Jan 1, 2000) and/or to the plane of the ecliptic (the imaginary plane containing the Earth's orbit around the Sun) where specified.
+Astronomical units (AU)
+: the mean distance between the Earth and the Sun
 
-Semi-major Axis
-: [units: AU] half of the length of the long axis of the ellipse (where AU is an astronomical unit, the mean distance between the Earth and the Sun)
+Orbital Elements
+: parameters that specify the angle of orbit in three dimensions and the position of the planet along that orbit (planets.json)
+
+J2000 Epoch
+: Jan 1, 2000. The moment in time the orbital elements were measured
+
+Plane of the ecliptic
+: the imaginary plane containing Earth's path around the Sun
+
+Semi-major axis
+: [units: AU] half the length of the long axis of the ellipse. Worded another way, the largest radius that exists in the satellite's orbit
 
 Eccentricity
 : [units: N/A] ratio between the focal distance (which is relative to J2000) and the semi-major axis
 
-Orbital Inclination
+Orbital inclination
 : [units: degrees] The tilt of the planet's orbit around the sun relative to plane of the ecliptic
 
-Longitude of the Ascending Node
+Longitude of the ascending node
 : [units: degrees] angular position on plane of the ecliptic relative to J2000
 
-Longitude of Perihelion
-: [units: degrees] the point in orbit closest to sun relative to the plane of the ecliptic. All three anomalies (calculated later on) are zero when the planet is in perihelion. The longitude of the ascending node subtracted from this angle is known as the argument of the periapsis
+Longitude of perihelion
+: [units: degrees] the point in orbit closest to sun relative to the plane of the ecliptic. All three anomalies (calculated later on) are zero when the planet is at perihelion.
 
-Mean Anomaly
+Argument of the periapsis
+: The longitude of the ascending node subtracted from the longitude of perihelion
+
+Mean anomaly
 : [units: degrees] the fraction of the period that has elapsed since the planet passed through the perihelion relative to J2000
 
 Period
-: [units: days] refers to the time around the sun
+: [units: days] the time it takes for the planet to travel around the sun
 
 ## Visualization in 2D ##
 ![Visualization in 2D](https://cdn.britannica.com/25/5725-050-E66883FF/Anomaly-A-aphelion-B-perihelion-anomaly-orbit-C-centre-E-eccentric.jpg)
@@ -39,6 +51,6 @@ The plane of reference is the orbital plane of Earth around the sun. The referen
 ## Caveats ##
 There are two main categories of planetary movement NOT accounted for which reduces our accuracy significantly:
 1. nutation and precession: changes in the planet's axis of rotation
-2. perturbations: forces other than the sun acting on the planet (other satellites). This especially effects the Jovian planets: Saturn, Jupiter, Uranus, and Neptune.
+2. perturbations: forces other than the sun acting on the planet (other planets). This especially effects the Jovian planets: Saturn, Jupiter, Uranus, and Neptune.
 
-In addition, we simplify the problem so that all planets "freeze" during travel time. Accounting for the movement of planets during travel time is currently beyond the scope of this project.
+Future work will be to [integrate equations of motion](https://phys.libretexts.org/Bookshelves/Astronomy__Cosmology/Celestial_Mechanics_(Tatum)/15%3A_Special_Perturbations/15.03%3A_The_equations_of_motion).

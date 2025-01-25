@@ -133,6 +133,7 @@ int main()
    const Planet *planets = populatePlanets();
    const Date date = getDate();
    const float days = calcDaysSinceEpoch(date);
+   cout << endl << "DISTANCES FROM EARTH (AU)" << endl << endl;
 
    for (size_t i = 0; i < 8; i++)
    {
