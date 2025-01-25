@@ -27,7 +27,7 @@ struct Date
    int month;
    int day;
    int year;
-   double ut;
+   double universalTime;
 };
 
 struct Waypoint

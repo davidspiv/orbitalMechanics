@@ -5,20 +5,9 @@
 
 #include "../include/io.h"
 #include "../include/struct.h"
+#include "../include/util.h"
 
 using namespace std;
-
-// ensures degrees is within the standard circle range
-double normalizeDegrees(double x)
-{
-   return x - floor(x / 360.0) * 360.0;
-}
-
-// converts degrees to radians
-double toRadians(double degrees)
-{
-   return degrees * (M_PI / 180.0);
-}
 
 // finds difference in days between date argument and the J2000 epoch
 double calcDaysSinceEpoch(const Date &date)
@@ -26,30 +15,15 @@ double calcDaysSinceEpoch(const Date &date)
    const int month = date.month;
    const int day = date.day;
    const int year = date.year;
-   const int ut = date.ut;
+   const int universalTime = date.universalTime;
 
    // intentional integer division
    double totalDays = 367 * year - 7 * (year + (month + 9) / 12) / 4 -
                       3 * ((year + (month - 9) / 7) / 100 + 1) / 4 +
                       275 * month / 9 + day - 730515;
-   totalDays = totalDays + ut / 24.0;
+   totalDays = totalDays + universalTime / 24.0;
 
    return totalDays - 1;
-}
-
-// will convert a double to a comma separated value truncated to two decimal
-// places
-string formatDouble(double yearsAsDouble)
-{
-   string yearsAsString = to_string(yearsAsDouble);
-   yearsAsString = yearsAsString.substr(0, yearsAsString.length() - 4);
-
-   for (int i = yearsAsString.length() - 6; i > 0; i = i - 3)
-   {
-      yearsAsString.insert(i, ",");
-   }
-
-   return yearsAsString;
 }
 
 // populates a dynamically allocated array with Planet structs and returns the
@@ -135,13 +109,6 @@ Planet *populatePlanets()
    neptune.longitudeOfPerihelion = 44.97135;
    neptune.meanAnomaly = 259.883;
    neptune.period = 164.79;
-
-   //  N = 131.7806_deg + 3.0173E-5_deg    * d
-   // i =   1.7700_deg - 2.55E-7_deg      * d
-   // w = 272.8461_deg - 6.027E-6_deg     * d
-   // a = 30.05826     + 3.313E-8         * d
-   // e = 0.008606     + 2.15E-9          * d
-   // M = 260.2471_deg + 0.005995147_deg  * d
 
    Planet *planets = new Planet[8]{mercury, venus,  earth,  mars,
                                    jupiter, saturn, uranus, neptune};
