@@ -3,7 +3,7 @@
 #include <iostream>
 #include <math.h>
 
-float getAcc(float pos)
+float getAccel(float pos)
 {
    const float G = 6.674e-11; // gravitational constant
    const float M = 1.9891e30; //[kg] mass of sun
@@ -27,9 +27,9 @@ int main()
 
    for (size_t i = 0; i < 365; i++)
    {
-      acc.x = getAcc(pos.x);
-      acc.y = getAcc(pos.y);
-      acc.z = getAcc(pos.z);
+      acc.x = getAccel(pos.x);
+      acc.y = getAccel(pos.y);
+      acc.z = getAccel(pos.z);
    }
 
    print(pos.x);

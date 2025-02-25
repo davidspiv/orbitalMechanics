@@ -1,23 +1,31 @@
-#Per CISP400 makefile tutorial
+BIN=main
+SRCDIR=src
+OBJDIR=build
+INCDIR=./include/
 
-CC=g++
-CFLAGS= -c -g -Wall -std=c++17 -fpermissive
-EXENAME= main
+CXX=g++
+OPT=-O0
+DEPFLAGS=-MP -MD
+CFLAGS=-g -Wall -std=c++17 -fpermissive -I$(INCDIR) $(OPT) $(DEPFLAGS)
+CPPFILES=$(wildcard $(SRCDIR)/*.cpp)
+OBJECTS=$(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(CPPFILES))
+DEPFILES=$(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.d,$(CPPFILES))
 
-default: build/main.o build/io.o build/util.o
-	$(CC) build/main.o build/io.o build/util.o -o $(EXENAME)
+all: $(OBJDIR)/$(BIN)
 
-build/main.o: src/main.cpp include/io.h include/util.h
-	$(CC) $(CFLAGS) src/main.cpp -o build/main.o
+$(OBJDIR)/$(BIN): $(OBJECTS)
+	$(CXX) -o $@ $^
 
-build/io.o: src/io.cpp include/io.h
-	$(CC) $(CFLAGS) src/io.cpp -o build/io.o
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CFLAGS) -c -o $@ $<
 
-build/util.o: src/util.cpp include/util.h
-	$(CC) $(CFLAGS) src/util.cpp -o build/util.o
+run: all
+	@./$(OBJDIR)/$(BIN)
 
 clean:
-	rm build/*.o $(EXENAME)
+	rm -rf $(OBJDIR)
 
-run:
-	./$(EXENAME)
+-include $(DEPFILES)
+
+.PHONY: all run clean

@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "../include/io.h"
-
 double calcVelocity(double x, double y)
 {
    return -2 * y + pow(x, 3) * pow(M_E, -2 * x);
