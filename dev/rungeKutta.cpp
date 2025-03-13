@@ -20,7 +20,7 @@ int main()
       const double k3 = calcVelocity(x + h / 2, y + h * k2 / 2);
       const double k4 = calcVelocity(x + h, y + h * k3);
 
-      y = y + h * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
+      y = y + h * (k1 + 2 * k2 + 2 * k3 + k4) / 6.0;
 
       print(y);
    }

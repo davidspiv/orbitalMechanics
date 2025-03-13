@@ -27,16 +27,16 @@ class Coord {
 };
 
 Coord Coord::rCoord(const Coord& other) const {
-  const double xD = x - other.x;
-  const double yD = y - other.y;
-  const double zD = z - other.z;
+  const double xD = other.x - x;
+  const double yD = other.y - y;
+  const double zD = other.z - z;
   return Coord(xD, yD, zD);
 };
 
 double Coord::distSquared(const Coord& other) const {
-  const double xD = x - other.x;
-  const double yD = y - other.y;
-  const double zD = z - other.z;
+  const double xD = other.x - x;
+  const double yD = other.y - y;
+  const double zD = other.z - z;
   return xD * xD + yD * yD + zD * zD;
 }
 
