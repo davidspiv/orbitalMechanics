@@ -21,7 +21,7 @@ std::string getString(const std::string &prompt)
    return input;
 }
 
-// gets date std::string from user input, more lenient than prompt suggests
+// gets date std::string from user input
 Date getDate()
 {
    int month = 0;
